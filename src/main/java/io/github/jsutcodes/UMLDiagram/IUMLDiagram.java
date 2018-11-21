@@ -47,7 +47,7 @@ public interface IUMLDiagram {
      * read in the file and populate
      * fields to generate UML
      */
-    public void readFile();
+    public ClassDiagram readFile();
 
 
 

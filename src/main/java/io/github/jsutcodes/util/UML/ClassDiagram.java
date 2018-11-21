@@ -11,10 +11,22 @@ public class ClassDiagram {
     private List<Pair<String,String>> classAtributes;
     private List <ClassMethod> classOperations;
 
+    public ClassDiagram() {
+        this(null);
+    }
+
     public ClassDiagram(String className){
         this.className = className;
         classAtributes = new LinkedList<>();
         classOperations = new LinkedList();
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public void addClassAttribute(String attrName, String attrType) {
@@ -33,7 +45,7 @@ public class ClassDiagram {
     @Override
     public String toString() {
         //String classDiagramStr = "{";
-        String classDiagramStr = String.format("{ \"className\":\"{0}\", \"classAttributes\": [{1}], \"classOperations\": [{2}]}",className, classAtributes, classOperations);
+        String classDiagramStr = String.format("{ \"className\":\"%s\", \"classAttributes\": [%s], \"classOperations\": [%s]}",className, classAtributes, classOperations);
         return classDiagramStr;
     }
 

@@ -16,7 +16,8 @@ public class Bicycle {
 
     // the Bicycle class has
     // four methods
-    public void setCadence(int newValue) {
+    public void setCadence(int newValue)
+    {
         cadence = newValue;
     }
 

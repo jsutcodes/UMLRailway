@@ -59,8 +59,9 @@ public class ClassMethod {
         this.returnType = returnType;
     }
 
-//    @Override
-//    public String toString() {
-//        return ;
-//    }
+    @Override
+    public String toString() {
+        String methodStr = String.format("{\"methodName\":\"%s\", \"returnType\": \"%s\", \"methodVisibility\":\"%s\", \"params\": [%s]", getMethodName(), getReturnType(),  getVisibility(), methodParam);
+        return methodStr;
+    }
 }
