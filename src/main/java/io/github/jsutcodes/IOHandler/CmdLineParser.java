@@ -2,6 +2,7 @@ package io.github.jsutcodes.IOHandler;
 
 import io.github.jsutcodes.UMLDiagram.IUMLDiagram;
 import io.github.jsutcodes.UMLDiagram.UMLDiagramFactory;
+import io.github.jsutcodes.util.UML.ClassDiagram;
 
 import java.io.File;
 /**
@@ -17,21 +18,6 @@ public class CmdLineParser {
         input = args;
     }
 
-    private enum Command {
-        HELP("-h", "--help", null);
-
-        private final String shortFlag;
-        private final String longFlag;
-        private final String nonOptional;
-
-        Command(String sflag, String lflag, String noOpArg){
-            this.shortFlag = sflag;
-            this.longFlag = lflag;
-            this.nonOptional = noOpArg;
-        }
-
-    }
-
     public void parse() throws Exception {
         if (input == null) {throw new Exception("No input detected."); }
 
@@ -42,6 +28,9 @@ public class CmdLineParser {
                     usage();
                     System.exit(0);
                 break;
+                case "--GUI":
+                    //Eventually implement a gui element to build Using graphics tools
+                    break;
 
                 default: // unrecognized flag or a system path
                     File path = new File(word);
@@ -51,7 +40,10 @@ public class CmdLineParser {
                             // recursive option
                             throw new Error("Recursive UML not functional currently.");
                         } else if(path.isFile()) {
-
+                            System.out.println("Generating UML Diagram for file: "+ path.getName());
+                            generator = UMLDiagramFactory.getUMLDiagram(path);
+                           ClassDiagram umlDiagram = generator.getUMLClassDiagram();
+                           System.out.println(umlDiagram);
                         }
                     } else { // path does not exists or is not a file or directory.
                         throw new Exception(String.format("Unrecognizable argument:(%s). Expected a file or Directory.",word ));
@@ -74,6 +66,7 @@ public class CmdLineParser {
         System.out.println("Usage:");
         System.out.println("\t UMLRailway.jar [FILE | DIR]\n");
         System.out.println("Given a file will generate a UMLDiagram for that file");
+        System.out.println("--GUI\tStarts the UI client.");
         System.out.println("-h\tDisplays this message");
 
     }
