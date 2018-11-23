@@ -27,7 +27,7 @@ Unified Modeling Language (UML) is a high level abstraction that lets coders foc
  
   #### Example 2: Directory
   ```
- java UMLRailway.jar /path/to/file/Bike.java
+ java UMLRailway.jar /path/to/BikeDir/
  Output:
         .___________________________.             .___________________________.
         |            Bike           |             |        MountainBike       |  
