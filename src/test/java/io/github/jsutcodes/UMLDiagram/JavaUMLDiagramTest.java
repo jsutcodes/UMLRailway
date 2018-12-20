@@ -6,7 +6,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
-import java.net.URL;
 
 public class JavaUMLDiagramTest extends TestCase {
 
@@ -18,27 +17,32 @@ public class JavaUMLDiagramTest extends TestCase {
         JavaUMLDiagram bikeJavaClass = null;
 
         try {
-            //File bikeFile = getResourceFile("Bicycle.java");
-             bikeFile = new File("C:\\Users\\jorsu\\git\\UMLRailway\\src\\test\\resources\\Bicycle.java");
+            bikeFile = getResourceFile("Bicycle.java");
+            // bikeFile = new File("C:\\Users\\jorsu\\git\\UMLRailway\\src\\test\\resources\\Bicycle.java");
             bikeJavaClass = new JavaUMLDiagram(bikeFile);
 
-
-
         } catch (NullPointerException e) {
-            fail("Test did not run. Resource File Not found");
+            System.err.println("Test did not run. Resource File Not found");
+            e.printStackTrace();
         }
 
-        assertEquals("JavaUMLDiagram should only work for files ending in .java", IUMLDiagram.FileEnding.JAVA, bikeJavaClass.getFileEnding());
-        //ClassDiagram bikeUML = bikeJavaClass.readFile();
+        //assertEquals("JavaUMLDiagram should only work for files ending in .java", IUMLDiagram.FileEnding.JAVA, bikeJavaClass.getFileEnding());
         ClassDiagram bikeUml  = bikeJavaClass.getUMLClassDiagram();
+        assertEquals("Has ClassName of Bike", "Bicycle",bikeUml.getClassName());
+
+        //assertEquals("Has SetCadence Method",,);
+
         System.out.println(bikeUml);
 
     }
 
-    private static File getResourceFile(String resourceName) throws NullPointerException{
-        URL url = JavaUMLDiagramTest.class.getResource("/src/main/test/resources/"+resourceName );
-        System.out.println(url);
-        return new File((((URL) url).getPath()));
+    private File getResourceFile(String resourceName) throws NullPointerException{
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource(resourceName).getFile());
+
+        return file;
+
     }
     // Expected Simple JSON from Bicycle.java class
 //    {

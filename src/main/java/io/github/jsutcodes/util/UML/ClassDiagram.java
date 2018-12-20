@@ -45,33 +45,7 @@ public class ClassDiagram {
     @Override
     public String toString() {
         //String classDiagramStr = "{";
-        String classDiagramStr = String.format("{ \"className\":\"%s\", \"classAttributes\": [%s], \"classOperations\": [%s]}",className, classAtributes, classOperations);
+        String classDiagramStr = String.format("{ \"className\":\"%s\", \"classAttributes\": %s, \"classOperations\": %s}",className, classAtributes, classOperations);
         return classDiagramStr;
     }
-
-    //    {
-//        "className": "Bicycle"
-//        "classAttributes": [
-//            "cadence": "int",
-//            "gear" : "int",
-//            "speed" : "int"
-//        ],
-//        "classOperations": [
-//            {"methodName": "Bicycle", "returnType": "constructor", "methodVisibitiy": "public", "params": [{"paramName":"startCadence"},{"paramType":"int"},{"paramName":"startSpeed"},{"paramType":"int"},{"paramName":"startGear"},{"paramType":"int"}] },
-//            {"methodName": "setCadence", "returnType": "void", "methodVisibitiy": "public", "params": [{"paramName":"newValue"},{"paramType":"int"}] },
-//            {"methodName": "setGear", "returnType": "void", "methodVisibitiy": "public", "params": [{"paramName":"newValue"},{"paramType":"int"}] },
-//            {"methodName": "applyBrake", "returnType": "void", "methodVisibitiy": "public", "params": [{"paramName":"decrement"},{"paramType":"int"}] },
-//            {"methodName": "speedUp", "returnType": "void", "methodVisibitiy": "public", "params": [{"paramName":"imcrement"},{"paramType":"int"}] }
-//        ]
-//
-//
-//
-//    }
-
-    public void addclassOperation() {
-
-    }
-
-
-
 }

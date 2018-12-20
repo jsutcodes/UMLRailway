@@ -61,7 +61,10 @@ public class ClassMethod {
 
     @Override
     public String toString() {
-        String methodStr = String.format("{\"methodName\":\"%s\", \"returnType\": \"%s\", \"methodVisibility\":\"%s\", \"params\": [%s]", getMethodName(), getReturnType(),  getVisibility(), methodParam);
+        String paramStr = "";
+        int paramCounter = 0;
+        for(Pair param : methodParam) {paramStr += String.format("{\"dataType\": \"%s\", \"paramName\": \"%s\"}%c", param.getKey(),param.getValue(),(paramCounter++ == methodParam.size()-1)?'\0':',');}
+        String methodStr = String.format("{\"methodName\":\"%s\", \"returnType\": \"%s\", \"methodVisibility\":\"%s\", \"params\": [%s]}", getMethodName(), getReturnType(),  getVisibility(), paramStr);
         return methodStr;
     }
 }

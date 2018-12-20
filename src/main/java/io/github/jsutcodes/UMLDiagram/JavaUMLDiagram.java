@@ -1,5 +1,6 @@
 package io.github.jsutcodes.UMLDiagram;
 
+import io.github.jsutcodes.util.UML.AccessModifier;
 import io.github.jsutcodes.util.UML.ClassDiagram;
 import io.github.jsutcodes.util.UML.ClassMethod;
 
@@ -39,7 +40,7 @@ public class JavaUMLDiagram implements IUMLDiagram {
     @Override
     public ClassDiagram readFile() {
         // regex example
-        Pattern methodRx = Pattern.compile("(public|protected|private|static|\\s) +[\\w\\<\\>\\[\\]]+\\s+(\\w+) *\\([^\\)]*\\) *(\\{?|[^;])");
+        Pattern methodRx = Pattern.compile("(public|protected|private|static|\\s) +([\\w\\<\\>\\[\\]]+\\s+)(\\w+) *(\\([^\\)]*\\)) *(\\{?|[^;])");
         Matcher matcher = methodRx.matcher("");
         //Regex regex2 = new Regex("(public|private|protected|static|final|native|synchronized|abstract|transient)+\\s)+[\\$_\\w\\<\\>\\[\\]]*\\s+[\\$_\\w]+\\([^\\)]*\\)?\\s*\\{?[^\\}]*\\}?");
 
@@ -68,20 +69,29 @@ public class JavaUMLDiagram implements IUMLDiagram {
 //                System.out.println("Found Method: ");
 //            }
 
+            AccessModifier modifierType = null;
             String methodName = null;
+            String returnType = null;
+            String params = null;
 
-            while (matcher.find()) {
+            while (matcher.find()) { //TODO: dont need a while loop just an 'if'
                 System.out.println("Number of parts"+ matcher.groupCount());
                 System.out.print("Method: ");
                 for (int i = 1; i <= matcher.groupCount(); i++) {
-                    System.out.print(" "+ matcher.group(i));
-                    if(i==2) methodName = matcher.group(i);
+                    System.out.print(" match: "+ matcher.group(i)+"\n");
+                    if(i == 4) {params = matcher.group(i);}
+                    else if(i == 3) {methodName = matcher.group(i);}
+                    else if(i==2) {returnType = matcher.group(i).trim();}
+                    else if (i ==1) {modifierType = AccessModifier.fromString(matcher.group((i)));}
 
                     // matched text: matcher.group(i)
                     // match start: regexMatcher.start(i)
                     // match end: regexMatcher.end(i)
                 }
                 ClassMethod newMethod = new ClassMethod(methodName);
+                newMethod.setVisibility(modifierType);
+                newMethod.setReturnType(returnType);
+                handleMethodParams(newMethod,params);
                 umlDiagram.addClassOperation(newMethod);
                 System.out.println();
 
@@ -90,79 +100,18 @@ public class JavaUMLDiagram implements IUMLDiagram {
         }
         return umlDiagram;
     }
-}
-//
-//        @Override
-//        public ClassDiagram readFile () {
-//            ClassDiagram umlDiagram = null;
-//            boolean classFlag = false;
-//            boolean insideClass = false;
-//            boolean variableFlag = false;
-//            boolean methodFlag = false;
-//
-//            Scanner fileScanner = null;
-//            try {
-//                fileScanner = new Scanner(javaFile);
-//            } catch (FileNotFoundException e) {
-//                System.err.println("Could not find file for reading in JavaUMLDiagram.");
-//                e.printStackTrace();
-//                return umlDiagram;
-//            }
-//
-//            umlDiagram = new ClassDiagram();
-//            while (fileScanner.hasNextLine()) {
-//                String fileLine = fileScanner.nextLine().trim();
-//                Scanner wordScanner = new Scanner(fileLine);
-//                try {
-//                    if (fileLine.substring(0, 1).equals("/")) {
-//                        //System.out.println("Don't iterate over comment lines");
-//                        continue;
-//                    }
-//                } catch (Exception e) {
-//                    //System.out.println("Must of hit new line");
-//                    continue;
-//                }
-//                System.out.println(fileLine);
-//                while (wordScanner.hasNext()) {
-//                    //System.out.println("Getting next word ");
-//                    String word = wordScanner.next();
-//                    System.out.println("assessing word: " + word);
-//
-//                    switch (word.toLowerCase()) {
-//                        case "class":
-//                            System.out.println("setting class flag. Found word: " + word);
-//                            classFlag = true;
-//                            break;
-//                        case "{":
-//                            if (insideClass) methodFlag = true;
-//                            else insideClass = true;
-//                            break;
-//                        case "}":
-//                            if (methodFlag) methodFlag = false;
-//                            else insideClass = false;
-//                            break;
-//                        default:
-//                            if (classFlag) {
-//                                classFlag = false;
-//                                umlDiagram.setClassName(word);
-//                            }
-//                            if (insideClass) {
-//                                if (!methodFlag)
-//                                    umlDiagram.addClassAttribute(fileLine, "test");
-//                                else { //this is close but wrong here
-//                                    ClassMethod method = new ClassMethod(fileLine);
-//                                    umlDiagram.addClassOperation(method);
-//                                }
-//                            }
-//                            break;
-//                    }
-//                }
-//            }
-//            return umlDiagram;
-//        }
 
-//        @Override
-//        public String toString() {
-//            return uml.toString();
-//        }
+    private void handleMethodParams(ClassMethod method, String params) {
+
+        String param[] = params.replace("(", "")
+                .replace(")", "")
+                .replace(",","")
+                .split("\\s+");
+
+        for (int i = 0; i < param.length;i+=2) {
+            method.addParam(param[i], param[i+1]);
+        }
+
+    }
+}
 

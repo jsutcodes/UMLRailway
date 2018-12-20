@@ -6,8 +6,9 @@ public class Bicycle {
     private int gear;
     private int speed;
 
-    // the Bicycle class has
+    /** the Bicycle class has
     // one constructor
+     */
     public Bicycle(int startCadence, int startSpeed, int startGear) {
         gear = startGear;
         cadence = startCadence;
@@ -21,7 +22,7 @@ public class Bicycle {
         cadence = newValue;
     }
 
-    public void setGear(int newValue) {
+    public static Test1 setGear(int newValue) {
         gear = newValue;
     }
 
@@ -29,8 +30,12 @@ public class Bicycle {
         speed -= decrement;
     }
 
-    public void speedUp(int increment) {
+    private BikeGear speedUp(int increment) {
         speed += increment;
+    }
+
+    private void testMethod (int inc, int dec, String desc) {
+
     }
 
 }

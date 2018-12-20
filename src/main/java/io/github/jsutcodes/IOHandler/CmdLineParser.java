@@ -3,8 +3,13 @@ package io.github.jsutcodes.IOHandler;
 import io.github.jsutcodes.UMLDiagram.IUMLDiagram;
 import io.github.jsutcodes.UMLDiagram.UMLDiagramFactory;
 import io.github.jsutcodes.util.UML.ClassDiagram;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * cmdLineParser - parses input from the file
  *  if its a directory it
@@ -14,11 +19,14 @@ public class CmdLineParser {
     private String[] input;
     private IUMLDiagram  generator;
 
+    private static final Logger logger = LogManager.getLogger();
+
     public CmdLineParser(String[] args) {
         input = args;
     }
 
     public void parse() throws Exception {
+        logger.info("testing the logger...");
         if (input == null) {throw new Exception("No input detected."); }
 
         for (String word : input) {
@@ -37,13 +45,14 @@ public class CmdLineParser {
 
                     if(path.exists()) {
                         if(path.isDirectory()) {
-                            // recursive option
-                            throw new Error("Recursive UML not functional currently.");
+                            List<ClassDiagram> diagram = new ArrayList<>();
+                            for (File f : path.listFiles()) {
+                                ClassDiagram newClass = getUMLDiagram(f);
+                                diagram.add(newClass);
+                                System.out.println(newClass);
+                            }
                         } else if(path.isFile()) {
-                            System.out.println("Generating UML Diagram for file: "+ path.getName());
-                            generator = UMLDiagramFactory.getUMLDiagram(path);
-                           ClassDiagram umlDiagram = generator.getUMLClassDiagram();
-                           System.out.println(umlDiagram);
+                            System.out.println(getUMLDiagram(path));
                         }
                     } else { // path does not exists or is not a file or directory.
                         throw new Exception(String.format("Unrecognizable argument:(%s). Expected a file or Directory.",word ));
@@ -51,6 +60,13 @@ public class CmdLineParser {
                 break;
             }
         }
+    }
+
+    private ClassDiagram getUMLDiagram(File path) {
+        System.out.println("Generating UML Diagram for file: "+ path.getName());
+        generator = UMLDiagramFactory.getUMLDiagram(path);
+        ClassDiagram umlDiagram = generator.getUMLClassDiagram();
+        return umlDiagram;
     }
 //    Should include in usage message:
 //    The name of the program
