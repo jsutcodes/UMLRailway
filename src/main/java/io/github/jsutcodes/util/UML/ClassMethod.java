@@ -1,7 +1,5 @@
 package io.github.jsutcodes.util.UML;
 
-import javafx.util.Pair;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class ClassMethod {
     }
 
     private AccessModifier visibility;
-    private List<Pair<String,String>> methodParam;
+    private List<ClassRelationship> methodParam;
 
     public ClassMethod(String methodName) {
         this(methodName,"void");
@@ -39,7 +37,7 @@ public class ClassMethod {
 
 
     public void addParam(String paramName, String type) {
-        Pair parameterToAdd = new Pair(paramName, type);
+        ClassRelationship parameterToAdd = new ClassRelationship(paramName, type);
         methodParam.add(parameterToAdd);
     }
 
@@ -63,7 +61,7 @@ public class ClassMethod {
     public String toString() {
         String paramStr = "";
         int paramCounter = 0;
-        for(Pair param : methodParam) {paramStr += String.format("{\"dataType\": \"%s\", \"paramName\": \"%s\"}%c", param.getKey(),param.getValue(),(paramCounter++ == methodParam.size()-1)?'\0':',');}
+        for(ClassRelationship param : methodParam) {paramStr += String.format("{\"dataType\": \"%s\", \"paramName\": \"%s\"}%c", param.x,param.y,(paramCounter++ == methodParam.size()-1)?' ':',');}
         String methodStr = String.format("{\"methodName\":\"%s\", \"returnType\": \"%s\", \"methodVisibility\":\"%s\", \"params\": [%s]}", getMethodName(), getReturnType(),  getVisibility(), paramStr);
         return methodStr;
     }

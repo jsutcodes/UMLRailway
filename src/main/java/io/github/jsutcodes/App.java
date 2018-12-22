@@ -1,6 +1,6 @@
 package io.github.jsutcodes;
 
-import io.github.jsutcodes.IOHandler.CmdLineParser;
+import io.github.jsutcodes.IO.CmdLineParser;
 
 /**
  * App.java is the main Entrypoint to UMLRailway Program

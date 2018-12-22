@@ -1,4 +1,4 @@
-package io.github.jsutcodes.IOHandler;
+package io.github.jsutcodes.IO;
 
 import io.github.jsutcodes.UMLDiagram.IUMLDiagram;
 import io.github.jsutcodes.UMLDiagram.UMLDiagramFactory;
@@ -49,7 +49,9 @@ public class CmdLineParser {
                             for (File f : path.listFiles()) {
                                 ClassDiagram newClass = getUMLDiagram(f);
                                 diagram.add(newClass);
-                                System.out.println(newClass);
+                            }
+                            for (ClassDiagram diagrams: diagram) {
+                                System.out.println(diagrams);
                             }
                         } else if(path.isFile()) {
                             System.out.println(getUMLDiagram(path));
